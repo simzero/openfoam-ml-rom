@@ -1,0 +1,15 @@
+[submodule "thirdparty/eigen"]
+	path = thirdparty/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "thirdparty/openfoam"]
+	path = thirdparty/openfoam
+	url = https://develop.openfoam.com/Development/openfoam.git
+[submodule "thirdparty/openfoam-thirdparty"]
+	path = thirdparty/openfoam-thirdparty
+	url = https://develop.openfoam.com/Development/ThirdParty-common.git
+[submodule "thirdparty/ithaca-fv"]
+	path = thirdparty/ithaca-fv
+	url = https://github.com/carpemonf/ITHACA-FV.git
+[submodule "thirdparty/openfoam-sdf-label"]
+	path = thirdparty/openfoam-sdf-label
+	url = https://github.com/simzero/openfoam-sdf-label.git

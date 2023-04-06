@@ -1,0 +1,40 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+boxHeight       79;
+
+boxLength       172;
+
+cellSize        1;
+
+nCellsX         #calc "ceil($boxLength/$cellSize)";
+
+nCellsZ         #calc "ceil($boxHeight/$cellSize)";
+
+stlNameFull     "constant/triSurface/circle_32.271_7.331_0.stl";
+
+stlName         circle_15.436_n6.338_0.stl;
+
+Ux              0.075;
+
+shapesPerParameter 5;
+
+sideMin         15;
+
+sideMax         45;
+
+dzMin           -10;
+
+dzMax           10;
+
+angleMin        -90;
+
+angleMax        90;
+
+
+// ************************************************************************* //

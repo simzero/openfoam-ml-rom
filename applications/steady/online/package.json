@@ -1,0 +1,15 @@
+{
+  "name": "pitzDaily",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "GNU LGPL V3.0",
+  "dependencies": {
+    "@simzero/rom": "file:../../../",
+    "esm": "^3.2.25",
+    "jszip": "^3.10.1",
+    "node-fetch": "^3.0.0",
+    "papaparse": "^5.3.1",
+    "react-csv-reader": "^3.3.1",
+    "yargs": "^17.5.1"
+  }
+}

@@ -1,0 +1,62 @@
+#!/bin/bash
+# Usage: ./Allrun $cores (e.g. ./Allrun 16)
+#------------------------------------------------------------------------------
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
+#------------------------------------------------------------------------------
+
+options="-wait -log-app"
+
+foamJob ${options} blockMesh
+restore0Dir
+
+# - Pre-processing
+./makeShapes.sh
+
+# - Generating fields needed for the training with DeepCFD
+aSTLFile=$(ls constant/triSurface | head -n 1)
+STLPath=constant/triSurface/${aSTLFile}
+foamDictionary inputs -entry stlNameFull -set \'\"${STLPath}\"\' -disableFunctionEntries
+foamDictionary inputs -entry stlName -set $aSTLFile -disableFunctionEntries
+foamJob ${options} sdf
+foamJob ${options} labelRegion
+foamJob ${options} foamToVTK -ascii -time 0 -fields '(sdf2 flowRegion)' -no-point-data
+
+# - CAD
+# - Building a collection of shapes with different sizes,
+# - positions and orientations
+./runSamples.sh $1
+
+# - DeepCFD 
+name=${PWD##*/}
+nx=$(foamDictionary -entry boxLength inputs -value)
+ny=$(foamDictionary -entry boxHeight inputs -value)
+
+python3 createDataset.py \
+        --nx ${nx} \
+        --ny ${ny} \
+        --model-input DeepCFD/${name}X.pkl \
+        --model-output DeepCFD/${name}Y.pkl > log.createDataset
+
+python3 -m deepcfd \
+        --net UNetEx \
+        --model-input DeepCFD/${name}X.pkl \
+        --model-output DeepCFD/${name}Y.pkl \
+        --output DeepCFD/${name}.pt \
+        --kernel-size 5 \
+        --filters 8,16,32,32 \
+        --epochs 2000 \
+        --batch-size 32 > log.deepcfd
+
+repoURL="https://github.com/simzero-oss/rom-js/tree/b1dc91848"
+path="/examples/OpenFOAM/incompressible/simpleFoam/flowAroundObstacles"
+metadata='''{
+    "source": "'${repoURL}${path}'"
+}'''
+
+python3 -m cfdonnx \
+        --net UNetEx \
+        --input DeepCFD/${name}.pt \
+        --output DeepCFD/${name}.onnx \
+        --metadata "${metadata}" > log.cfdonnx
