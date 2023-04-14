@@ -2,7 +2,7 @@
 
 Examples for generating OpenFOAM ML and ROM surrogates:
 
-[flowAroundObstacles](https://github.com/simzero/openfoam-ml-rom/tree/main/OpenFOAM/incompressible/simpleFoam/flowAroundObstacles)
+- [flowAroundObstacles](https://github.com/simzero/openfoam-ml-rom/tree/main/OpenFOAM/incompressible/simpleFoam/flowAroundObstacles)
 
 ## Usage
 
@@ -49,3 +49,7 @@ CORES=30 make ml
 ```
 
 Alternatively, you can use your own installation and navigate to the OpenFOAM examples and run `./Allrun 30`.
+
+## Disclaimer
+
+This offering is not approved or endorsed by OpenCFD Limited, producer and distributor of the OpenFOAM software via www.openfoam.com, and owner of the OPENFOAM® and OpenCFD® trade marks. This offering is not approved or endorsed by any software packages mentioned above or their respective owners, and should not be considered as such.
