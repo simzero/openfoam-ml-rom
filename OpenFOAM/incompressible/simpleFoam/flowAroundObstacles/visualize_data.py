@@ -11,7 +11,9 @@ from matplotlib import pyplot as plt
 
 matplotlib.use('tkagg')
 
-filename="checkpoint.pt"
+model_file="checkpoint.pt"
+data_x_file="DeepCFD/flowAroundObstaclesX.pkl"
+data_y_file="DeepCFD/flowAroundObstaclesY.pkl"
 
 index = 200
 
@@ -47,8 +49,8 @@ model = UNetEx(
     weight_norm=wn
 )
 
-x = pickle.load(open("DeepCFD/flowAroundObstaclesX.pkl", "rb"))
-y = pickle.load(open("DeepCFD/flowAroundObstaclesY.pkl", "rb"))
+x = pickle.load(open(data_x_file, "rb"))
+y = pickle.load(open(data_y_file, "rb"))
 
 x = torch.FloatTensor(x)
 y = torch.FloatTensor(y)
@@ -69,12 +71,12 @@ def update_plot():
     # Wait until the file is completely written
     while True:
         try:
-            with open(filename, "r") as f:
+            with open(model_filename, "r") as f:
                 break
         except IOError:
             time.sleep(1)
 
-    state_dict = torch.load(filename)
+    state_dict = torch.load(model_filename)
     model.load_state_dict(state_dict)
     out = model(x[index:(index+1)]).detach().numpy()
     error = abs(out - truth)
@@ -138,7 +140,6 @@ while True:
                 last_saved = last_saved - 1
                 break
 
-    # plt.clf()
     update_plot()
 
     time.sleep(5)

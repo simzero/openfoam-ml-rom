@@ -39,7 +39,6 @@ with open(log_file, 'r') as f:
 
 epochs = list(range(1, len(train_loss) + 1))
 
-# Create subplots
 fig, axs = plt.subplots(ncols=2, sharex=True, figsize=(14, 8))
 
 axs[0].plot(epochs[initial_epoch:], train_loss[initial_epoch:], label='Train Loss')
@@ -60,8 +59,5 @@ axs[1].set_xlabel('Epoch')
 axs[1].set_ylabel('MSE')
 axs[1].legend()
 
-#plt.xlabel('Epochs')
-#plt.ylabel('Loss/MSE')
-#plt.legend()
 plt.show()
 
