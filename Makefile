@@ -8,7 +8,7 @@ install:
 	npm install
 
 thirdparty:
-	cd thirdparty && ./make.sh && pip3 install -r requirements.txt
+	cd thirdparty && ./make.sh && cd .. && pip3 install -r requirements.txt
 
 ml:
 	source $(openfoam-dir) && cd OpenFOAM && ./Allrun.ml ${CORES}
