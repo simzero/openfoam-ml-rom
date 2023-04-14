@@ -1,6 +1,8 @@
 # flowAroundObstacles
 
-Workflow for solving the flow around different obstacles using simpleFoam.
+Workflow for solving the flow around different obstacles using simpleFoam. This case
+is adapted from the example described by Mateus Dias Ribeiro and collaborators in
+[DeepCFD](https://github.com/mdribeiro/DeepCFD) and the [paper](https://arxiv.org/abs/2004.08826).
 
 Usage:
 
