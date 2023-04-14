@@ -15,7 +15,7 @@ git submodule update --init --recursive
 ### Requirements
 
 Common:
-* [OpenFOAM](https://develop.openfoam.com/Development/openfoam) after v2106
+* [OpenFOAM](https://develop.openfoam.com/Development/openfoam) (after v2106)
 * Python3
 
 ML-based:
