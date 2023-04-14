@@ -1,6 +1,8 @@
 # openfoam-ml-rom
 
-Examples for generating OpenFOAM ML and ROM surrogates.
+Examples for generating OpenFOAM ML and ROM surrogates:
+
+[flowAroundObstacles](https://github.com/simzero/openfoam-ml-rom/tree/main/OpenFOAM/incompressible/simpleFoam/flowAroundObstacles)
 
 ## Usage
 
@@ -16,7 +18,7 @@ Common:
 * [OpenFOAM](https://develop.openfoam.com/Development/openfoam) after v2106
 * Python3
 
-ML-based
+ML-based:
 * [openfoam-sdf-label](https://github.com/simzero/openfoam-sdf-label)
 * [deepcfd](https://github.com//carpemonf/deepcfd)
 * [cfdonnx](https://github.com/simzero/cfdonnx)
