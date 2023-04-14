@@ -12,7 +12,7 @@ foamJob ${options} blockMesh
 restore0Dir
 
 # - Pre-processing
-./makeShapes.sh
+./shapes.sh
 
 # - Generating fields needed for the training with DeepCFD
 aSTLFile=$(ls constant/triSurface | head -n 1)
@@ -26,7 +26,7 @@ foamJob ${options} foamToVTK -ascii -time 0 -fields '(sdf2 flowRegion)' -no-poin
 # - CAD
 # - Building a collection of shapes with different sizes,
 # - positions and orientations
-./runSamples.sh $1
+./samples.sh $1
 
 # - DeepCFD 
 name=${PWD##*/}
@@ -39,24 +39,27 @@ python3 createDataset.py \
         --model-input DeepCFD/${name}X.pkl \
         --model-output DeepCFD/${name}Y.pkl > log.createDataset
 
-python3 -m deepcfd \
-        --net UNetEx \
-        --model-input DeepCFD/${name}X.pkl \
-        --model-output DeepCFD/${name}Y.pkl \
-        --output DeepCFD/${name}.pt \
-        --kernel-size 5 \
-        --filters 8,16,32,32 \
-        --epochs 2000 \
-        --batch-size 32 > log.deepcfd
+#
+./training.sh
+#python3 -m deepcfd \
+#        --net UNetEx \
+#        --model-input DeepCFD/${name}X.pkl \
+#        --model-output DeepCFD/${name}Y.pkl \
+#        --output DeepCFD/${name}.pt \
+#        --kernel-size 5 \
+#        --filters 8,16,32,32 \
+#        --epochs 2000 \
+#        --batch-size 32 > log.deepcfd
 
-repoURL="https://github.com/simzero-oss/rom-js/tree/b1dc91848"
-path="/examples/OpenFOAM/incompressible/simpleFoam/flowAroundObstacles"
-metadata='''{
-    "source": "'${repoURL}${path}'"
-}'''
+./convertToONNX.sh
+#repoURL="https://github.com/simzero/openfoam-ml-rom"
+#path="OpenFOAM/incompressible/simpleFoam/flowAroundObstacles"
+#metadata='''{
+#    "source": "'${repoURL}${path}'"
+#}'''
 
-python3 -m cfdonnx \
-        --net UNetEx \
-        --input DeepCFD/${name}.pt \
-        --output DeepCFD/${name}.onnx \
-        --metadata "${metadata}" > log.cfdonnx
+#python3 -m cfdonnx \
+#        --net UNetEx \
+#        --input DeepCFD/${name}.pt \
+#        --output DeepCFD/${name}.onnx \
+#        --metadata "${metadata}" > log.cfdonnx

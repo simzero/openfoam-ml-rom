@@ -73,7 +73,7 @@ module export(shape="circle") {
 }
 
 shape = "circle";
-stlName = "aaaa";
+stlName = "test";
 scaleFactor = 0;
 diameter = 0;
 side = 0;
@@ -84,7 +84,5 @@ anglez = 0;
 dx = 0;
 dy = 0;
 dz = 0;
-
-echo (shape)
 
 export(shape);
