@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: thirdparty
 
 SHELL := /bin/bash
 
