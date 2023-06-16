@@ -1,2 +1,2 @@
-git+https://github.com/carpemonf/DeepCFD.git@feat-module
+git+https://github.com/mdribeiro/DeepCFD
 cfdonnx==2.0.0
