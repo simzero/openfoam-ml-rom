@@ -1,3 +1,5 @@
+### :heavy_check_mark: New cases will soon be added
+
 # openfoam-ml-rom
 
 Examples for generating OpenFOAM ML and ROM surrogates:
