@@ -5,7 +5,7 @@
 Models and workflos for generating and deploying OpenFOAM surrogate models:
 
 * Machine Learning (ML)
-  - [flowAroundObstacles](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles)
+  - [flowAroundObstacles](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) ([demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html))
 
 * Reduced order modeling (non-ML)
   - [pitzDaily](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/pitzDaily)
@@ -45,7 +45,7 @@ make requirements-debian
 You can build the thirdparty packages with:
 
 ```
-make thirdparty CORES=8
+CORES=8 make thirdparty
 ```
 
 This will build OpenFOAM and related tools in the thirdparty folder. `OpenSCAD` is needed for some examples and needs to be installed separately. For Ubuntu, run:
