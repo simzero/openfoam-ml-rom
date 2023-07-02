@@ -1,0 +1,45 @@
+#!/bin/bash
+# Usage: ./Allrun $cores (e.g. ./Allrun 16)
+#------------------------------------------------------------------------------
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
+#------------------------------------------------------------------------------
+
+if [ -z "$1" ]
+  then
+    OFFLINE_CORES=1
+else
+    OFFLINE_CORES=$1
+fi
+
+NAME=$(basename "$(pwd)")
+
+echo "######################################"
+echo "# CASE: flowAroundObstacles          #"
+echo "######################################"
+
+# CAD
+# Building a collection of shapes with different sizes,
+# positions and orientations
+echo Running CAD workflow...
+./scripts/shapes.sh > log.shapes 2>&1
+
+echo Preprocessing...
+./scripts/preprocessing.sh > log.preprocessing 2>&1
+
+echo Running CFD workflow...
+./scripts/samples.sh ${OFFLINE_CORES} > log.samples 2>&1
+
+# ML
+echo Generating dataset...
+./scripts/createDataset.sh > log.createDataset 2>&1
+
+echo Training ML model...
+./scripts/training.sh > log.training 2>&1
+
+echo Converting to ONNX...
+./scripts/convertToONNX.sh > log.convertToONNX 2>&1
+
+echo Running evaluation...
+./scripts/evaluation.sh $OFFLINE_CORES > log.evaluation 2>&1

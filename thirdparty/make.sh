@@ -3,7 +3,9 @@
 PROC=6
 BUILD_ROOT=.
 
-echo $BUILD_ROOT
+if [[ -v CORES && -n "${CORES}" ]]; then
+  PROC=${CORES}
+fi
 
 echo "#############################"
 echo  INITIALIZING THIRD PARTY CODE
@@ -40,5 +42,4 @@ APPLICATIONS=../applications
 source $ITHACAFV_ROOT/etc/bashrc
 
 (cd $ITHACAFV_ROOT && ./Allwmake -j${PROC})
-(cd ${APPLICATIONS}/steady/offline && wmake)
-
+(cd ${APPLICATIONS}/offline/steady && wmake)

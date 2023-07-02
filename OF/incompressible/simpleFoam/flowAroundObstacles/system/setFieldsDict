@@ -1,0 +1,56 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "<case>/config"
+
+// outsidePoint #calc "$boxLength*0.00075";
+
+defaultFieldValues
+(
+    volScalarFieldValue alpha 0
+);
+
+regions
+(
+/*    surfaceToCell
+    {
+        file            $stlNameFull;
+        outsidePoints   (($outsidePoint 0 0));
+        includeCut      true;
+        includeInside   true;
+        includeOutside  false;
+        nearDistance    -1;
+
+        curvature       -100;
+
+        fieldValues
+        (
+            volScalarFieldValue alpha 0
+        );
+    }*/
+
+    cellToCell
+    {
+        set             obstacle;
+
+        fieldValues
+        (
+            volScalarFieldValue alpha 1
+        );
+    }
+);
+
+// ************************************************************************* //

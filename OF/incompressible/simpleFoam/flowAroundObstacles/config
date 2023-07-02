@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// CFD Model
+
+boxHeight       128;
+
+boxLength       256;
+
+cellSize        1;
+
+nCellsX         256;
+
+nCellsZ         128;
+
+stlName         circle_35.408_13.490_0.stl;
+
+// Workflow
+
+Ux              0.075;
+
+shapesPerParameter 6;
+
+sideMin         32;
+
+sideMax         64;
+
+dzMin           -16;
+
+dzMax           16;
+
+angleMin        -90;
+
+angleMax        90;
+
+UMin            0.075;
+
+UMax            0.075;
+
+UStep           0.075;
+
+// ML Training
+
+net             UNetEx;
+
+learningRate    0.001;
+
+kernelSize      5;
+
+epochs          1000;
+
+batchSize       32;
+
+filters         "8,16,32,32";
+
+nTests          10;
+
+
+// ************************************************************************* //

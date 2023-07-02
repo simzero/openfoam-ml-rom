@@ -1,0 +1,22 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
+#------------------------------------------------------------------------------
+
+NAME=$(basename "$(pwd)")
+
+cleanCase0
+
+rm -r constant/triSurface
+rm -r runs
+rm -r ITHACAoutput
+rm -r sequencedVTU
+rm -r sequencedSTL
+rm -r evaluation
+rm -r DeepCFD
+rm checkpoint.pt
+rm ${NAME}.vtu
+rm ${NAME}.onnx
+
+#------------------------------------------------------------------------------
+

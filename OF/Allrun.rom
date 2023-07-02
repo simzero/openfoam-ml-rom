@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CORES=$1
+
+(cd incompressible/simpleFoam/pitzDaily && ./Allrun ${CORES})
