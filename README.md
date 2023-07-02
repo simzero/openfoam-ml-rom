@@ -12,7 +12,7 @@ Models and workflos for generating and deploying OpenFOAM surrogate models:
 
 ## Installation requirements
 
-Initialize the third-party submodules with:
+Initialize the thirdparty submodules with:
 
 ```
 git submodule update --init --recursive
@@ -45,7 +45,7 @@ make requirements-debian
 You can build the thirdparty packages with:
 
 ```
-make thirdparty
+make thirdparty CORES=8
 ```
 
 This will build OpenFOAM and related tools in the thirdparty folder. `OpenSCAD` is needed for some examples and needs to be installed separately. For Ubuntu, run:
