@@ -239,8 +239,10 @@
               var updateColorLegend = () => {
                 labels.dispose();
                 labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-                title.text = titleText;
+                labels.rootContainer.alpha = !colorLegend;
                 labels.addControl(title);
+
+                title.text = titleText;
 
                 var labelPosition = -0.5 * colorbarWidth;
                 var labelSpacing = colorbarWidth / nLabels;
