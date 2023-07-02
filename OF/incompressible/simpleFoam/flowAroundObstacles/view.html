@@ -24,8 +24,7 @@
     <!-- SIMZERO -->
     <script src="https://unpkg.com/jszip@3.7.1/dist/jszip.min.js"></script>
     <script src="https://unpkg.com/file-saver@2.0.5"></script>
-    <!-- <script src="/home/carlos/jsfluids-git/dist/browser.js"></script>  -->
-    <script src="https://unpkg.com/@simzero/jsfluids@0.3.4/dist/browser.js"></script>
+    <script src="https://unpkg.com/@simzero/jsfluids@0.3.5/dist/browser.js"></script>
     <script src="https://unpkg.com/@jscad/modeling@2.11.0"></script>
     <script src="https://unpkg.com/@simzero/jscad-io@2.4.4-rc.4/dist/browser.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.13.1/dist/ort.min.js"></script>
@@ -49,40 +48,40 @@
   <body>
     <div id="inputGroup">
       <div style="display: flex; align-items: center;">
-        <label style="margin-left: 10px" for="mesh" class="custom-file-upload">
-          Mesh (pitzDaily.vtu)
+        <label style="margin-left: 10px; width: 175px;" for="mesh" class="custom-file-upload">
+          Mesh (*.vtu)
         </label>
         <input style="margin: 5px;" type="file" id="mesh" onchange="loadFile('mesh')">
-        <a href="https://simzero.github.io/pg/v0.1/mesh/pitzDaily.vtu" download>
-          Download pitzDaily.vtu sample
+        <a href="https://simzero.github.io/pg/v0.2/mesh/flowAroundObstacles.vtu" download>
+          Download flowAroundObstacles.vtu sample
         </a>
       </div>
       <div style="display: flex; align-items: center;">
-        <label style="margin-left: 10px" for="ROM" class="custom-file-upload">
-          ROM (pitzDaily.zip)
+        <label style="margin-left: 10px; width: 175px;" for="ONNX" class="custom-file-upload">
+          ONNX Model (*.onnx)
         </label>
-        <input style="margin: 5px;"type="file" id="ROM" onchange="loadFile('ROM')">
-        <a href="https://simzero.github.io/pg/v0.1/rom/pitzDaily.zip" download>
-          Download pitzDaily.zip sample
+        <input style="margin: 5px;"type="file" id="ONNX" onchange="loadFile('ONNX')">
+        <a href="https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx" download>
+          Download flowAroundObstacles.onnx sample
         </a>
       </div>
       <br>
       <div>
-        <button style="margin-left: 10px" onclick="run('ROM'); hideElements()">LOAD</button>
+        <button style="margin-left: 10px" onclick="run('ONNX'); hideElements()">LOAD</button>
       </div>
     </div>
 
     <canvas id="renderCanvas"></canvas>
-    
+
     <script>
       let meshData;
-      let romData;
+      let mlData;
       let ready = false;
         
       function hideElements() {
         document.getElementById('inputGroup').style.display = 'none';
       }
-    
+
       function loadFile(id) {
         const input = document.getElementById(id);
         const file = input.files[0];
@@ -93,9 +92,9 @@
               const contents = new Uint8Array(event.target.result);
               meshData = contents;
           }
-          if (id === 'ROM') {
+          if (id === 'ONNX') {
               const contents = new Uint8Array(event.target.result);
-              romData = contents;
+              mlData = contents;
           }
         };
 
@@ -104,7 +103,7 @@
         };
 
         reader.readAsArrayBuffer(file);
-      }    
+      }
 
       var canvas = document.getElementById("renderCanvas");
 
@@ -130,64 +129,106 @@
         );
       };
 
-      var baseURL = "https://simzero.github.io/pg/v0.1/";
-       
+      var baseURL = "https://simzero.github.io/pg/v0.2/";
+
       var createScene = function () {
-        var currentVelocity = 10;
-        var currentViscosity = 1e-05;
-          
+        // This is the number of grid cells
+        var nx = 256;
+        var ny = 128;
+        var nCells = nx * ny;
+
+        // This is the initial state
         var range = null;
+        var shapeSize = 32;
+        var shape = "Square";
+        var shapePosition = 0;
+        var shapeRotation = 0;
+        var colorLegend = true;
         var field = "U";
         var component = 0;
         var titleText = "U (m/s)"
-      
+
         // This creates a basic Babylon Scene object (non-mesh)
         var scene = new BABYLON.Scene(engine);
-        
+
         // This creates and positions a free camera (non-mesh)
         var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 0, 0), scene);
         camera.attachControl(canvas, true);    
 
         // This initializes the ITHACA-FV model
-        var model = JSFLUIDS.ITHACAFV;
-        
+        var model = JSFLUIDS.ML;
+
         // Display loading window 
         engine.displayLoadingUI();
-      
+
         model.loadMesh(meshData).then(() => {
-          model.loadModel(romData).then(() => {
+          ort.InferenceSession.create(mlData).then((onnx) => {
             var gltf = model.setComponent({ component: "surface" });
             var blob = new Blob([gltf]);
             var url = URL.createObjectURL(blob);
-        
+
             BABYLON.SceneLoader.ImportMesh("", url, "", scene, (meshes) => {
               scene.createDefaultCameraOrLight(true, true, true);
+              var light = scene.lights[0];
+              light.direction = new BABYLON.Vector3(1, 0, 0);
               scene.activeCamera.alpha += 2 * Math.PI / 2;
-        
+              scene.activeCamera.beta += -Math.PI / 2; 
+
               // - GUI
-              var changeVelocity = (velocity) => {
-                console.log("Velocity: ", velocity)
-                currentVelocity = velocity;
+              var changeSize = (value) => {
+                shapeSize = value;
                 updateField();
               }
-              var changeViscosity = (viscosity) => {
-                currentViscosity = viscosity;
-                console.log("Viscosity: ", viscosity)
+
+              var changePosition = (value) => {
+                shapePosition = value;
                 updateField();
               }
-              var onValueChangeVelocity = function (value) {
-                var newValue = Math.round(value * 10) / 10;
 
-                  return newValue;
-              };
-              var onValueChangeViscosity = function(value) {
-                var newValue = value * 1e05;
-                newValue = Math.round(newValue * 10) / 10;
+              var changeAngle = (value) => {
+                shapeRotation = value;
+                updateField();
+              }
 
-                return newValue;
-              };
+              var angleValue = (value) => {
+                return BABYLON.Tools.ToDegrees(value) | 0;
+              }
 
+              var setShape = (value) => {
+                switch (value) {
+                  case 0:
+                    shape = "Square";
+                    updateField();
+                    break
+                  case 1:
+                    shape = "Circle";
+                    updateField();
+                    break
+                  case 2:
+                    shape = "Ellipse";
+                    updateField();
+                    break
+                  case 3:
+                    shape = "HalfCircle";
+                    updateField();
+                    break
+                }
+              }
+
+              var colorbarTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
               var labels = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+              var toggleColorbar = (isChecked) => {
+                if (!isChecked) {
+                  colorLegend = true;
+                  colorbarTexture.rootContainer.alpha = !colorLegend;
+                  labels.rootContainer.alpha = !colorLegend;
+                } else {
+                  colorLegend = false;
+                  colorbarTexture.rootContainer.alpha = !colorLegend;
+                  labels.rootContainer.alpha = !colorLegend;
+                }
+              }
 
               var title = new BABYLON.GUI.TextBlock();
               title.text = titleText;
@@ -218,17 +259,116 @@
                   labelPosition += labelSpacing;
                 }
               };
-                
+
+
+              var updateGeometry = () => {
+                var width = 2;
+                var resolution = 100;
+
+                var primitive;
+
+                switch (shape) {
+                  case "Square":
+                    primitive = JSCAD.modeling.primitives.cuboid({
+                      size: [shapeSize / 1000, width / 1000, shapeSize / 1000]
+                    });
+                    break;
+                  case "Circle":
+                    primitive = JSCAD.modeling.primitives.cylinder({
+                      radius: 0.5 * shapeSize / 1000,
+                      height: width / 1000,
+                      segments: resolution
+                    });
+                    primitive = JSCAD.modeling.transforms.rotateX(Math.PI / 2, primitive);
+                    break;
+                  case "Ellipse":
+                    primitive = JSCAD.modeling.primitives.ellipse({
+                      radius: [0.5 * shapeSize / 1000, 0.25 * shapeSize / 1000],
+                      segments: resolution
+                    });
+                    primitive = JSCAD.modeling.extrusions.extrudeLinear(
+                      {
+                        height: width / 1000
+                      },
+                        primitive
+                    );
+                    primitive = JSCAD.modeling.transforms.rotateX(Math.PI / 2, primitive);
+                    primitive = JSCAD.modeling.transforms.translateY(0.5 * width / 1000, primitive);
+                    break;
+                  case "HalfCircle":
+                    primitive = JSCAD.modeling.primitives.cylinder({
+                      radius: 0.5 * shapeSize / 1000,
+                      height: width / 1000,
+                      segments: resolution,
+                    });
+                    primitive = JSCAD.modeling.transforms.rotateX(Math.PI / 2, primitive);
+
+                    var square = JSCAD.modeling.primitives.cuboid({
+                      size: [shapeSize / 1000, width / 1000, shapeSize / 1000],
+
+                    });
+                    square = JSCAD.modeling.transforms.translateX(0.5 * shapeSize / 1000, square);
+                    primitive = JSCAD.modeling.booleans.subtract(primitive, square);
+                    break;
+                  default:
+                    console.error("Unkown shape");
+                }
+
+                var rotatedSquare = JSCAD.modeling.transforms.rotateY(
+                  shapeRotation,
+                  primitive
+                );
+
+                var translatedSquare = JSCAD.modeling.transforms.translateZ(
+                  shapePosition / 1000,
+                  rotatedSquare
+                );
+
+                var stl = JSCAD.IO.stlSerializer.serialize({ binary: false }, translatedSquare);
+
+                return stl;
+              }
+
+              var inferField = (onnx, model, feeds, meshes) => {
+                onnx.run(feeds).then((results) => {
+                  var Uxy = results['outputModel'].data.slice(0, 2 * nCells);
+                  var U = new Float32Array(3 * nCells);
+                  U.set(Uxy.slice(0, nCells));
+                  U.fill(0, nCells, 2 * nCells);
+                  U.set(Uxy.slice(-nCells), 2 * nCells);
+
+                  var p = results['outputModel'].data.slice(-nCells);
+
+                  model.update({ field: "U", data: U });
+                  model.update({ field: "p", data: p });
+
+                  var render = model.render({
+                    field: field,
+                    index: component,
+                    // range: [0, 0.1]
+                  });
+                  meshes[1].setVerticesData(BABYLON.VertexBuffer.ColorKind, render.colors, true);
+                  range = render.range;
+                }).then(() => updateColorLegend());
+              }
+
               var updateField = () => {
-                model.update({ nu: currentViscosity, U: [currentVelocity, 0.0] });
-                var render = model.render({
-                  field: field,
-                  index: component,
-                  // range: [0, 5]
-                });
-                meshes[1].setVerticesData(BABYLON.VertexBuffer.ColorKind, render.colors, true);
-                range = render.range;
-                updateColorLegend();
+                if (scene.getMeshByName("JSCAD")) {
+                  scene.getMeshByName("JSCAD").dispose();
+                }
+
+                var stl = updateGeometry();
+
+                BABYLON.SceneLoader.ImportMesh("", "data:" + stl, "", scene, (meshes) => {
+                  meshes[0].rotation.x = -Math.PI / 2;
+                  meshes[0].rotation.y = Math.PI;
+                }, null, null, ".stl");
+
+                var inputArray = Float32Array.from(model.SDFAndRegion(stl[0]));
+                var inputTensor = new ort.Tensor('float32', inputArray, [1, 3, ny, nx]);
+                var feeds = { inputModel: inputTensor };
+
+                inferField(onnx, model, feeds, meshes);
               }
 
               var setField = (value) => {
@@ -257,30 +397,32 @@
 		    component = -1;
 		    updateField();
 		    break;
-		  case 4:
-		    field = "nut";
-		    titleText = "nut (m2/s)";
-		    component = -1;
-		    updateField();
-		    break;
 		 }
               }
 
               var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        
-              var sliderGroup = new BABYLON.GUI.SliderGroup("PARAMETERS");
-              var velocitySlider = sliderGroup.addSlider("Inlet velocity", changeVelocity, "m/s", 1.0, 20, currentVelocity, onValueChangeVelocity);
 
-              sliderGroup.addSlider("Viscosity", changeViscosity, "(x1e-05) m2/s2", 5e-06, 1.0e-04, 1.0e-05, onValueChangeViscosity);
+              var sliderGroup = new BABYLON.GUI.SliderGroup("PARAMETERS");
+              sliderGroup.addSlider("Size", changeSize, "mm", 32, 62, shapeSize);
+              sliderGroup.addSlider("Vertical position", changePosition, "mm", -14, 14, 0);
+              sliderGroup.addSlider("Angle", changeAngle, "degs", -Math.PI / 2, Math.PI / 2, 0, angleValue);
+
+              var shapeGroup = new BABYLON.GUI.RadioGroup("SHAPE");
+              shapeGroup.addRadio("Square", setShape, true);
+              shapeGroup.addRadio("Circle", setShape);
+              shapeGroup.addRadio("Ellipse", setShape);
+              shapeGroup.addRadio("HalfCircle", setShape);
 
               var fieldGroup = new BABYLON.GUI.RadioGroup("FIELD");
               fieldGroup.addRadio("Umag", setField, true);
               fieldGroup.addRadio("Ux", setField);
               fieldGroup.addRadio("Uy", setField);
               fieldGroup.addRadio("p", setField);
-              fieldGroup.addRadio("nut", setField);
-        
-              var panel = new BABYLON.GUI.SelectionPanel("sp", [sliderGroup, fieldGroup]);
+
+              var optionsGroup = new BABYLON.GUI.CheckboxGroup("OPTIONS");
+              optionsGroup.addCheckbox("Colorbar", toggleColorbar, true);
+
+              var panel = new BABYLON.GUI.SelectionPanel("sp", [sliderGroup, shapeGroup, fieldGroup, optionsGroup]);
               panel.width = 0.25;
               //panel.height = 0.18;
               panel.fontSize = "14px";
@@ -291,8 +433,6 @@
               panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
               panel.adaptHeightToChildren = true;
               advancedTexture.addControl(panel);
-
-              var colorbarTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
               var colorbarWidth = 400;
               var colorbarHeight = 15;
@@ -306,10 +446,13 @@
               bar.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
               bar.top = colorbarTopMargin + "px";
 
+              colorbarTexture.rootContainer.alpha = colorLegend;
               colorbarTexture.addControl(bar);
+              labels.rootContainer.alpha = colorLegend;
 
+              toggleColorbar(true);
               updateField();
-        
+
               // Hide loading window
               engine.hideLoadingUI();
             }, null, null, ".gltf");
@@ -318,9 +461,9 @@
         
         return scene;
       };
-        
+
       function run() {
-        window.initFunction = async function() {        
+        window.initFunction = async function() {
           await jsfluids.ready;
 
           var asyncEngineCreation = async function() {
@@ -343,10 +486,10 @@
           if (!BABYLON.EngineStore.LastCreatedEngine) {
             BABYLON.EngineStore.Instances.push(engine);
           }
-                 
+
           if (!engine) throw 'engine should not be null.';
           startRenderLoop(engine, canvas);
-       
+
           window.scene = createScene();
           window.scene.clearColor = {r: 0.12, g: 0.12, b: 0.12, a: 1};
         };
