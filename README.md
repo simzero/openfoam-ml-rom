@@ -2,7 +2,7 @@
 
 # openfoam-ml-rom
 
-Models and workflos for generating and deploying OpenFOAM surrogate models:
+Models and workflows for generating and deploying OpenFOAM surrogate models:
 
 * Machine Learning (ML)
   - [flowAroundObstacles](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) ([demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html))
