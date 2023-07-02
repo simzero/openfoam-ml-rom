@@ -48,11 +48,8 @@ You can build the thirdparty packages with:
 CORES=8 make thirdparty
 ```
 
-This will build OpenFOAM and related tools in the thirdparty folder. `OpenSCAD` is needed for some examples and needs to be installed separately. For Ubuntu, run:
+This will build OpenFOAM and related tools in the thirdparty folder.
 
-```
-sudo apt-get install nodejs openscad libgl1-mesa-glx xvfb
-```
 
 ## Usage
 
