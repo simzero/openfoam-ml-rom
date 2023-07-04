@@ -1,3 +1,4 @@
 git+https://github.com/mdribeiro/DeepCFD
 cfdonnx==2.0.0
 pyvista==0.39.1
+tqdm==4.65.0
