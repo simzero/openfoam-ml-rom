@@ -1,9 +1,9 @@
 import os
 import sys
-import meshio
-import numpy as np
 import pickle
 import getopt
+import pyvista as pv
+import numpy as np
 from tqdm import tqdm
 
 
@@ -69,19 +69,19 @@ if __name__ == "__main__":
         f = open(shape_label, "r")
         shape = f.readline()
 
-        input_mesh = meshio.read(input_path)
-        output_mesh = meshio.read(output_path)
+        input_mesh = pv.read(input_path)
+        output_mesh = pv.read(output_path)
 
         i = i + 1;
 
-        sdf1 = np.array(input_mesh.cell_data['sdf1'])
-        sdf2 = np.array(input_mesh.cell_data['sdf2'])
-        flowRegion = np.array(input_mesh.cell_data['flowRegion'])
+        sdf1 = input_mesh.cell_data['sdf1']
+        sdf2 = input_mesh.cell_data['sdf2']
+        flowRegion = input_mesh.cell_data['flowRegion']
 
-        U = np.array(output_mesh.cell_data['U'])
-        Ux = U[0][:,0]
-        Uz = U[0][:,2]
-        p = np.array(output_mesh.cell_data['p'])
+        U = output_mesh.cell_data['U']
+        Ux = U[:,0]
+        Uz = U[:,2]
+        p = output_mesh.cell_data['p']
         p = np.squeeze(p)
 
         sdf1 = sdf1.reshape(ny, nx)
