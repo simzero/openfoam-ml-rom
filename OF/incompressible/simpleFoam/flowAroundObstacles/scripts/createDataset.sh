@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAME=${PWD##*/}
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 NX=$(foamDictionary config -entry boxLength -value -disableFunctionEntries)
 NY=$(foamDictionary config -entry boxHeight -value -disableFunctionEntries)

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-NAME=$(basename "$(pwd)")
-
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 NET=$(foamDictionary config -entry net -value -disableFunctionEntries)
 LEARNING_RATE=$(foamDictionary config -entry learningRate -value -disableFunctionEntries)
 KERNEL_SIZE=$(foamDictionary config -entry kernelSize -value -disableFunctionEntries)

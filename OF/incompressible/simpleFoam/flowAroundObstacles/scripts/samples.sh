@@ -36,7 +36,6 @@ run_case () {
 #  - Configuration
 CORES=$1
 LANG=en_US
-NAME=flowAroundObstacles
 
 OFFLINE_PATH=sequencedVTU
 STL_PATH=sequencedSTL

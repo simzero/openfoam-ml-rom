@@ -13,7 +13,7 @@ else
     OFFLINE_CORES=$1
 fi
 
-NAME=$(basename "$(pwd)")
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 echo "######################################"
 echo "# CASE: flowAroundObstacles          #"

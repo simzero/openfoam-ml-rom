@@ -27,7 +27,8 @@ run_case () {
 CORES=$1
 LANG=en_US
 LC_ALL=C
-NAME=$(basename "$(pwd)")
+
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 #  - Parameter ranges
 U_MIN=$(foamDictionary config -entry UMin -value -disableFunctionEntries)

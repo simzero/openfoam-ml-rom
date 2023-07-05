@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAME=$(basename "$(pwd)")
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 REPO="https://github.com/simzero/openfoam-ml-rom"
 CASE_PATH="OpenFOAM/incompressible/simpleFoam/flowAroundObstacles"

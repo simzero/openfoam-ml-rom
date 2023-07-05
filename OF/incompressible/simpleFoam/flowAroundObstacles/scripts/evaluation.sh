@@ -54,7 +54,7 @@ LC_ALL=C
 
 APP=scripts/generateVtu.mjs
 
-NAME=$(basename "$(pwd)")
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 MODEL_PATH=${NAME}.onnx
 
 if [ ! -d evaluation ];then

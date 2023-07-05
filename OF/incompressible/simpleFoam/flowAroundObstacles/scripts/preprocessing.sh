@@ -4,7 +4,7 @@
 . ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
 #------------------------------------------------------------------------------
 
-NAME=$(basename "$(pwd)")
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 OPTIONS="-wait -log-app"
 

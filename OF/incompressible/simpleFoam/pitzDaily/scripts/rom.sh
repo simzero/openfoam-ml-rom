@@ -1,7 +1,7 @@
 #/bin/bash
 
 #  Creating directories
-NAME=$(basename "$(pwd)")
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 foamJob -screen steady
 # foamJob -screen steady -online -Ux 10.0 -nu 0.00001

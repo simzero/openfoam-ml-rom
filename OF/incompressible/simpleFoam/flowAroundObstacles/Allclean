@@ -3,7 +3,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 . ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
 #------------------------------------------------------------------------------
 
-NAME=$(basename "$(pwd)")
+NAME=$(foamDictionary config -entry name -value -disableFunctionEntries)
 
 cleanCase0
 
