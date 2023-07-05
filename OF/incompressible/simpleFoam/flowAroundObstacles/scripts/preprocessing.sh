@@ -19,4 +19,4 @@ foamDictionary config -entry stlName -set $STL_FILE -disableFunctionEntries
 foamJob ${OPTIONS} sdf
 foamJob ${OPTIONS} labelRegion
 foamJob ${OPTIONS} foamToVTK -ascii -time 0 -fields '(sdf2 flowRegion)' -no-point-data
-mv VTK/${NAME}_*/internal.vtu ./${NAME}.vtu
+mv VTK/${NAME}*/internal.vtu ./${NAME}.vtu
