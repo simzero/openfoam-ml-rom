@@ -9,7 +9,7 @@ foamJob -screen steady
 
 foamToVTK -ascii -time 0 -fields 'none' -no-point-data
 
-mv VTK/${NAME}_*/internal.vtu ./${NAME}.vtu
+mv VTK/${NAME}*/internal.vtu ./${NAME}.vtu
 
 #  - Copying ROM data to the global surrogates folder
 #  Pack PPE
