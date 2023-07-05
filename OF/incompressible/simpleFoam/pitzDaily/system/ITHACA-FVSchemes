@@ -1,0 +1,13 @@
+    "div\(U.*\)"                                 Gauss linear;
+
+    "grad\(U.*\)"                                Gauss linear;
+
+    grad(Phi)                                    Gauss linear;
+
+    "curl\(U.*\)"                                Gauss linear;
+
+    "div\(dev\(T\(grad\(U.*\)\)\)\)"             Gauss linear;
+
+    "div\(\(nut\*dev.*\(grad\(U.*\).T\(\)\)\)\)" Gauss linear;
+
+    "div\(\(interpolate\(U.*\)&S\),U.*\)"        bounded Gauss linearUpwind Gauss linear;

@@ -1,0 +1,47 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// CFD Model
+
+Ux              10.0;
+
+inletWidth      0.0254;
+
+mixingLength    #calc "0.1*$inletWidth";
+
+ti              0.05;
+
+uPrime          #calc "$ti * $Ux";
+
+k               #calc "1.5*pow($uPrime,2)";
+
+epsilon         #calc "pow(0.09,0.75)*pow($k,1.5)/$mixingLength";
+
+
+// Workflow
+
+UMin 1.0;
+
+UMax 20.0;
+
+UStep 0.5;
+
+nuMin 0.000005;
+
+nuMax 0.0001;
+
+nuStep 5e-06;
+
+
+// ROM Tests
+
+nTests 780;
+
+
+// ************************************************************************* //

@@ -1,0 +1,56 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.2                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      ITHACAdict;
+}
+
+// EigenValue solver, can be eigen or spectra
+EigenSolver eigen;
+
+boundaryName inlet;
+
+// supremizer or PPE
+stabilization supremizer;
+
+// Number of modes to output and to use for projection
+NmodesU 4;
+NmodesUproj 4;
+NmodesP 4;
+NmodesPproj 4;
+NmodesSUP 4;
+NmodesSUPproj 4;
+NmodesNut 4;
+NmodesNutproj 4;
+
+// eddy viscosity coefficients computation method
+viscCoeff RBF;
+
+// Output format to save market vectors.
+OutPrecision 20;
+OutType fixed;
+
+// Specific problem of a stationary case
+tolerance 1e-7;
+
+// Export Reduced Matrices
+exportPython 0;
+exportMatlab 0;
+exportTxt 1;
+
+bcMethod lift;
+
+POD_U L2;
+POD_p L2;
+POD_Usup L2;
+
+normalizationNorm L2;

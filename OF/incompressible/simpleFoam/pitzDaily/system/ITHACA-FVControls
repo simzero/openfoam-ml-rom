@@ -1,0 +1,4 @@
+potentialFlow
+{
+    nNonOrthogonalCorrectors 10;
+}
