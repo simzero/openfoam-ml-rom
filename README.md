@@ -12,7 +12,7 @@ Models and workflows for generating and deploying OpenFOAM surrogate models:
 
 ## Usage with Docker
 
-We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#docker).
 
 You can create an alias for the docker run command and options for convenience:
 
