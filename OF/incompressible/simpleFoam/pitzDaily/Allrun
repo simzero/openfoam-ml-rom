@@ -25,7 +25,12 @@ restore0Dir > log.restore 2>&1
 blockMesh > log.blockMesh 2>&1
 echo Running CFD workflow...
 ./scripts/samples.sh $OFFLINE_CORES > log.samples 2>&1
-echo Building ROM...
-./scripts/rom.sh > log.rom 2>&1
-echo Running evaluation...
-./scripts/evaluation.sh $OFFLINE_CORES > log.evaluation 2>&1
+
+SKIP_TRAINING=$(echo "$SKIP_TRAINING" | tr '[:upper:]' '[:lower:]')
+
+if [ -z "$SKIP_TRAINING" ] || [ "$SKIP_TRAINING" = "false" ]; then
+  echo Building ROM...
+  ./scripts/rom.sh > log.rom 2>&1
+  echo Running evaluation...
+  ./scripts/evaluation.sh $OFFLINE_CORES > log.evaluation 2>&1
+fi

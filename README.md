@@ -12,27 +12,35 @@ Models and workflows for generating and deploying OpenFOAM surrogate models:
 
 ## Usage with Docker
 
-We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install/ubunt) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install/ubuntu) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 You can create an alias for the docker run command and options for convenience:
 
-```
-alias run_model='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -v ${PWD}:/model openfoam-ml-rom:v0.2.0'
+```bash
+alias runModel='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -v ${PWD}:/model openfoam-ml-rom:v0.2.0'
 ```
 
-`run_model` is a Docker command designed to run specific models with specified options. This command makes use of GPU acceleration, mounts your current directory to the Docker container.
+`runModel` is a Docker command designed to run specific models with specified options. This command makes use of GPU acceleration and mounts your current directory to the Docker container.
 
-```
-run_model [OPTIONS]
+```bash
+runModel [OPTIONS]
+
+Example: runModel -m OF/incompressible/simpleFoam/pitzDaily -j 30
 
 OPTIONS:
 
--l, --list: List all available models, e.g.: `run_model` -l to get the list of models.
--m, --model: Run a specified model, e.g.: `run_model` -m OF/incompressible/simpleFoam/flowAroundObstacles.
+-l, --list: List all available models, e.g.: `runModel` -l to get the list of models.
+
+-m, --model: Run a specified model, e.g.: `runModel` -m OF/incompressible/simpleFoam/flowAroundObstacles.
+-s, --skipTraining: Flag to skip training and evaluation steps.
 -j: Specify the number of cores for the run, .e.g.: `-j 4`.
--c, --command: Instead of running a model, specify a command to run, e.g.: `run_model -c blockMesh`.
+
+-c, --command: Instead of running a model, specify a command to run, e.g.: `runModel -c blockMesh`.
+
 -h, --help: Display help text, including the list of options and their descriptions.
 ```
+
+For `--skipTraining`, no GPUs are used and `--gpus all` is not required.
 
 ## Usage from the repository
 
