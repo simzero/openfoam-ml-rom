@@ -17,7 +17,7 @@ We provide a Docker image for directly running the models. You need Docker-CE to
 You can create an alias for the docker run command and options for convenience:
 
 ```bash
-alias runModel='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -v ${PWD}:/model openfoam-ml-rom:v0.2.0'
+alias runModel='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -v ${PWD}:/model ghcr.io/simzero/openfoam-ml-rom:v0.2.0'
 ```
 
 `runModel` is a Docker command designed to run specific models with specified options. This command makes use of GPU acceleration and mounts your current directory to the Docker container.
