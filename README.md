@@ -30,7 +30,7 @@ OPTIONS:
 -l, --list: List all available models, e.g.: `run_model` -l to get the list of models.
 -m, --model: Run a specified model, e.g.: `run_model` -m OF/incompressible/simpleFoam/flowAroundObstacles.
 -j: Specify the number of cores for the run, .e.g.: `-j 4`.
--c, --command: Instead of running a mode, specify the command to run in the current folder, e.g.: `run_model -c blockMesh`.
+-c, --command: Instead of running a model, specify a command to run, e.g.: `run_model -c blockMesh`.
 -h, --help: Display help text, including the list of options and their descriptions.
 ```
 
