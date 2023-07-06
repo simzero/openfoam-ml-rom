@@ -5,14 +5,14 @@
 Models and workflows for generating and deploying OpenFOAM surrogate models:
 
 * Machine Learning (ML)
-  - flowAroundObstacles ([demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html) | [model](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx) | [mesh](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.vtu) | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles))
+  - flowAroundObstacles ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html) | [model](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx) | [mesh](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.vtu) | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) )
 
 * Reduced Order Modeling (non-ML)
-  - pitzDaily ([demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/pitzDaily/view.html) | [model]() | [mesh]()  | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/pitzDaily))
+  - pitzDaily ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/pitzDaily/view.html) | [model]() | [mesh]()  | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/pitzDaily) )
 
 ## Usage with Docker
 
-We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install/ubuntu) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 You can create an alias for the docker run command and options for convenience:
 

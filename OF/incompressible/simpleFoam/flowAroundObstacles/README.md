@@ -16,8 +16,6 @@ e.g.:
 
 The output of the worflow is the ONNX model at DeepCFD/flowAroundObstacles.onnx.
 
-You can test its use at https://play.simzero.com/#D3SFTH#7.
-
 ## Case
 
 ![Scheme](imgs/scheme.png)

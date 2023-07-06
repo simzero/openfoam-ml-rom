@@ -15,3 +15,7 @@ e.g.:
 ## Case
 
 ![Scheme](imgs/scheme.png)
+
+## Video (click to watch on YouTube)
+
+[![Watch the video](https://img.youtube.com/vi/RgjXLLWjNdo/maxresdefault.jpg)](https://youtu.be/RgjXLLWjNdo)
