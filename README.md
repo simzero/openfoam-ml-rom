@@ -22,7 +22,7 @@ alias runModel='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -
 
 `runModel` is a Docker command designed to run specific models with specified options. This command makes use of GPU acceleration and mounts your current directory to the Docker container.
 
-```bash
+```
 runModel [OPTIONS]
 
 Example: runModel -m OF/incompressible/simpleFoam/pitzDaily -j 30
@@ -33,14 +33,23 @@ OPTIONS:
 
 -m, --model: Run a specified model, e.g.: `runModel` -m OF/incompressible/simpleFoam/flowAroundObstacles.
 -s, --skipTraining: Flag to skip training and evaluation steps.
--j: Specify the number of cores for the run, .e.g.: `-j 4`.
+-j: Specify the number of simultaneous jobs, .e.g.: `-j 4`.
 
 -c, --command: Instead of running a model, specify a command to run, e.g.: `runModel -c blockMesh`.
 
 -h, --help: Display help text, including the list of options and their descriptions.
 ```
 
-For `--skipTraining`, no GPUs are used and `--gpus all` is not required.
+For `--skipTraining`, no GPUs are used and the `--gpus all` Docker flag is not needed.
+
+Running the workflows from the source code may generate a substantial amount of data and require significant resources. Please ensure your system has sufficient storage and processing capabilities before proceeding. The table below shows some details about the existing models:
+
+| Name  | Dataset size (GB) | ROM/ML model size (MB) | Wall-clock time (h)
+| ------------- | ------------- | ------------- | ------------- |
+| pitzDaily  | 3.7  | 4.4 | TBD
+| flowAroundObstacles  | 28  | 3.2 | TBD
+
+Note: The models currently represent a baseline for generating and deploying the surrogate models using different techniques. In the future, improvements may be made to both the performance and accuracy of the models and the efficiency of the data generation process (when required).
 
 ## Usage from the repository
 
