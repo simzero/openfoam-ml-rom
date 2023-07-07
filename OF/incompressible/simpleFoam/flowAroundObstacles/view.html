@@ -215,8 +215,8 @@
                 }
               }
 
-              var colorbarTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-              var labels = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+              var colorbarTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+              var labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
               var toggleColorbar = (isChecked) => {
                 if (!isChecked) {
@@ -390,7 +390,7 @@
 		  case 2:
 		    field = "U";
 		    titleText = "Uy (m/s)";
-		    component = 1;
+		    component = 2;
 		    updateField();
 		    break;
 		  case 3:
