@@ -20,7 +20,7 @@ You can create an alias for the docker run command and options for convenience:
 alias runModel='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -v ${PWD}:/model ghcr.io/simzero/openfoam-ml-rom:v0.2.0'
 ```
 
-`runModel` is a Docker command designed to run specific models with specified options. This command makes use of GPU acceleration and mounts your current directory to the Docker container.
+`runModel` is a Docker command designed to run specific models with specified options. This command enables the use of GPUs and mounts your current directory to the Docker container. You can use `runModel` with the following options:
 
 ```
 runModel [OPTIONS]
@@ -29,13 +29,13 @@ Example: runModel -m OF/incompressible/simpleFoam/pitzDaily -j 30
 
 OPTIONS:
 
--l, --list: List all available models, e.g.: `runModel` -l to get the list of models.
+-l, --list: List all available models, e.g.: runModel -l
 
--m, --model: Run a specified model, e.g.: `runModel` -m OF/incompressible/simpleFoam/flowAroundObstacles.
+-m, --model: Run a specified model, e.g.: runModel -m OF/incompressible/simpleFoam/flowAroundObstacles
 -s, --skipTraining: Flag to skip training and evaluation steps.
--j: Specify the number of simultaneous jobs, .e.g.: `-j 4`.
+-j: Specify the number of simultaneous jobs, .e.g.: -j 4
 
--c, --command: Instead of running a model, specify a command to run, e.g.: `runModel -c blockMesh`.
+-c, --command: Instead of running a model, specify a command to run, e.g.: runModel -c ./Allrun, or runModel -c "blockMesh -h"
 
 -h, --help: Display help text, including the list of options and their descriptions.
 ```
