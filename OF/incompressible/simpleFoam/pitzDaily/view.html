@@ -72,7 +72,7 @@
     </div>
 
     <canvas id="renderCanvas"></canvas>
-    
+
     <script>
       let meshData;
       let romData;
@@ -81,7 +81,7 @@
       function hideElements() {
         document.getElementById('inputGroup').style.display = 'none';
       }
-    
+
       function loadFile(id) {
         const input = document.getElementById(id);
         const file = input.files[0];
@@ -103,7 +103,7 @@
         };
 
         reader.readAsArrayBuffer(file);
-      }    
+      }
 
       var canvas = document.getElementById("renderCanvas");
 
@@ -152,17 +152,17 @@
         
         // Display loading window 
         engine.displayLoadingUI();
-      
+
         model.loadMesh(meshData).then(() => {
           model.loadModel(romData).then(() => {
             var gltf = model.setComponent({ component: "surface" });
             var blob = new Blob([gltf]);
             var url = URL.createObjectURL(blob);
-        
+
             BABYLON.SceneLoader.ImportMesh("", url, "", scene, (meshes) => {
               scene.createDefaultCameraOrLight(true, true, true);
               scene.activeCamera.alpha += 2 * Math.PI / 2;
-        
+
               // - GUI
               var changeVelocity = (velocity) => {
                 console.log("Velocity: ", velocity)
@@ -186,7 +186,7 @@
                 return newValue;
               };
 
-              var labels = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+              var labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
               var title = new BABYLON.GUI.TextBlock();
               title.text = titleText;
@@ -231,42 +231,42 @@
               }
 
               var setField = (value) => {
-		switch (value) {
-		  case 0:
-		    field = "U";
-		    titleText = "Umag (m/s)"
+                switch (value) {
+                  case 0:
+                    field = "U";
+                    titleText = "Umag (m/s)"
                     component = -1;
-		    updateField();
-		    break;
-		  case 1:
-		    field = "U";
-		    titleText = "Ux (m/s)";
-		    component = 0;
-		    updateField();
-		    break;
-		  case 2:
-		    field = "U";
-		    titleText = "Uy (m/s)";
-		    component = 1;
-		    updateField();
-		    break;
-		  case 3:
-		    field = "p";
-		    titleText = "p (m2/s2)";
-		    component = -1;
-		    updateField();
-		    break;
-		  case 4:
-		    field = "nut";
-		    titleText = "nut (m2/s)";
-		    component = -1;
-		    updateField();
-		    break;
-		 }
+                    updateField();
+                    break;
+                  case 1:
+                    field = "U";
+                    titleText = "Ux (m/s)";
+                    component = 0;
+                    updateField();
+                    break;
+                  case 2:
+                    field = "U";
+                    titleText = "Uy (m/s)";
+                    component = 1;
+                    updateField();
+                    break;
+                  case 3:
+                    field = "p";
+                    titleText = "p (m2/s2)";
+                    component = -1;
+                    updateField();
+                    break;
+                  case 4:
+                    field = "nut";
+                    titleText = "nut (m2/s)";
+                    component = -1;
+                    updateField();
+                    break;
+                }
               }
 
               var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        
+
               var sliderGroup = new BABYLON.GUI.SliderGroup("PARAMETERS");
               var velocitySlider = sliderGroup.addSlider("Inlet velocity", changeVelocity, "m/s", 1.0, 20, currentVelocity, onValueChangeVelocity);
 
@@ -278,7 +278,7 @@
               fieldGroup.addRadio("Uy", setField);
               fieldGroup.addRadio("p", setField);
               fieldGroup.addRadio("nut", setField);
-        
+
               var panel = new BABYLON.GUI.SelectionPanel("sp", [sliderGroup, fieldGroup]);
               panel.width = 0.25;
               //panel.height = 0.18;
@@ -291,7 +291,7 @@
               panel.adaptHeightToChildren = true;
               advancedTexture.addControl(panel);
 
-              var colorbarTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+              var colorbarTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
               var colorbarWidth = 400;
               var colorbarHeight = 15;
@@ -308,7 +308,7 @@
               colorbarTexture.addControl(bar);
 
               updateField();
-        
+
               // Hide loading window
               engine.hideLoadingUI();
             }, null, null, ".gltf");
@@ -317,9 +317,9 @@
         
         return scene;
       };
-        
+
       function run() {
-        window.initFunction = async function() {        
+        window.initFunction = async function() {
           await jsfluids.ready;
 
           var asyncEngineCreation = async function() {
@@ -345,7 +345,7 @@
                  
           if (!engine) throw 'engine should not be null.';
           startRenderLoop(engine, canvas);
-       
+
           window.scene = createScene();
           window.scene.clearColor = {r: 0.12, g: 0.12, b: 0.12, a: 1};
         };

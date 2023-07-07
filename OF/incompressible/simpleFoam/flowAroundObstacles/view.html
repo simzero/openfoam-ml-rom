@@ -215,8 +215,8 @@
                 }
               }
 
-              var colorbarTexture = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-              var labels = new BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+              var colorbarTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+              var labels = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
               var toggleColorbar = (isChecked) => {
                 if (!isChecked) {
