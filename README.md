@@ -5,7 +5,7 @@
 Models and workflows for generating and deploying OpenFOAM surrogate models:
 
 * Machine Learning (ML)
-  - flowAroundObstacles ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html) | [model](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx) | [mesh](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.vtu) | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) )
+  - flowAroundObstacles ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html) | [model](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx) | [mesh](https://simzero.github.io/pg/v0.2/mesh/flowAroundObstacles.vtu) | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) )
 
 * Reduced Order Modeling (non-ML)
   - pitzDaily ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/pitzDaily/view.html) | [model](https://simzero.github.io/pg/v0.2/rom/pitzDaily.zip) | [mesh](https://simzero.github.io/pg/v0.2/mesh/pitzDaily.vtu)  | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/pitzDaily) )
