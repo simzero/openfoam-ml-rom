@@ -5,14 +5,15 @@
 Models and workflows for generating and deploying OpenFOAM surrogate models:
 
 * Machine Learning (ML)
-  - flowAroundObstacles ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html) | [model](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx) | [mesh](https://simzero.github.io/pg/v0.2/mesh/flowAroundObstacles.vtu) | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) )
+  - flowAroundObstacles ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/flowAroundObstacles/view.html) | [model](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.onnx) | [mesh](https://simzero.github.io/pg/v0.2/onnx/flowAroundObstacles.vtu) | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/flowAroundObstacles) )
 
 * Reduced Order Modeling (non-ML)
-  - pitzDaily ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/pitzDaily/view.html) | [model](https://simzero.github.io/pg/v0.2/rom/pitzDaily.zip) | [mesh](https://simzero.github.io/pg/v0.2/mesh/pitzDaily.vtu)  | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/pitzDaily) )
+  - pitzDaily ( [demo](https://simzero.github.io/openfoam-ml-rom/OF/incompressible/simpleFoam/pitzDaily/view.html) | [model]() | [mesh]()  | [source](https://github.com/simzero/openfoam-ml-rom/tree/main/OF/incompressible/simpleFoam/pitzDaily) )
+  - windAroundBuildings (WIP)
 
 ## Usage with Docker
 
-We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML training for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#docker).
+We provide a Docker image for directly running the models. You need Docker-CE to be [installed](https://docs.docker.com/engine/install) and [configured](https://docs.docker.com/engine/install/linux-postinstall) in your machine. The workflows include ML trainning for which support of CPU is automatically enabled, but GPU is highly recommended. To enable the use of GPUs from inside the container you need to install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 You can create an alias for the docker run command and options for convenience:
 
@@ -20,36 +21,27 @@ You can create an alias for the docker run command and options for convenience:
 alias runModel='docker run --gpus all -it --user "$(id -u):$(id -g)" -w /model -v ${PWD}:/model ghcr.io/simzero/openfoam-ml-rom:v0.2.0'
 ```
 
-`runModel` is a Docker command designed to run specific models with specified options. This command enables the use of GPUs and mounts your current directory to the Docker container. You can use `runModel` with the following options:
+`runModel` is a Docker command designed to run specific models with specified options. This command makes use of GPU acceleration and mounts your current directory to the Docker container.
 
-```
+```bash
 runModel [OPTIONS]
 
 Example: runModel -m OF/incompressible/simpleFoam/pitzDaily -j 30
 
 OPTIONS:
 
--l, --list: List all available models, e.g.: runModel -l
+-l, --list: List all available models, e.g.: `runModel` -l to get the list of models.
 
--m, --model: Run a specified model, e.g.: runModel -m OF/incompressible/simpleFoam/flowAroundObstacles
+-m, --model: Run a specified model, e.g.: `runModel` -m OF/incompressible/simpleFoam/flowAroundObstacles.
 -s, --skipTraining: Flag to skip training and evaluation steps.
--j: Specify the number of simultaneous jobs, .e.g.: -j 4
+-j: Specify the number of cores for the run, .e.g.: `-j 4`.
 
--c, --command: Instead of running a model, specify a command to run, e.g.: runModel -c ./Allrun, or runModel -c "blockMesh -h"
+-c, --command: Instead of running a model, specify a command to run, e.g.: `runModel -c blockMesh`.
 
 -h, --help: Display help text, including the list of options and their descriptions.
 ```
 
-For `--skipTraining`, no GPUs are used and the `--gpus all` Docker flag is not needed.
-
-Running the workflows from the source code may generate a substantial amount of data and require significant resources. Please ensure your system has sufficient storage and processing capabilities before proceeding. The table below shows some details about the existing models:
-
-| Name  | Dataset size (GB) | ROM/ML model size (MB) | Wall-clock time (h)
-| ------------- | ------------- | ------------- | ------------- |
-| pitzDaily  | 3.7  | 4.4 | TBD
-| flowAroundObstacles  | 28  | 3.2 | TBD
-
-Note: The models currently represent a baseline for generating and deploying the surrogate models using different techniques. In the future, improvements may be made to both the performance and accuracy of the models and the efficiency of the data generation process (when required).
+For `--skipTraining`, no GPUs are used and `--gpus all` is not required.
 
 ## Usage from the repository
 
